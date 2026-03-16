@@ -1149,6 +1149,9 @@ typedef enum {
 	COMM_GET_GNSS,
 
 	COMM_LOG_DATA_F64,
+
+	// Custom command for the Bionic Boarder App
+	COMM_GET_BIONIC_BOARDER,
 } COMM_PACKET_ID;
 
 // CAN commands
