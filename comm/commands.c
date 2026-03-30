@@ -1686,16 +1686,16 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 		buffer_append_float32(send_buffer, mc_interface_get_rpm(), 1e0, &ind);
 
 		float rpy[3], acc[3];
-		imu_get_rpy(rpy);
 		imu_get_accel(acc);
-		
-		buffer_append_float32_auto(send_buffer, rpy[0], &ind);
-		buffer_append_float32_auto(send_buffer, rpy[1], &ind);	
-		buffer_append_float32_auto(send_buffer, rpy[2], &ind);
+		imu_get_rpy(rpy);		
 		
 		buffer_append_float32_auto(send_buffer, acc[0], &ind);
 		buffer_append_float32_auto(send_buffer, acc[1], &ind);
 		buffer_append_float32_auto(send_buffer, acc[2], &ind);		
+
+		buffer_append_float32_auto(send_buffer, rpy[0], &ind);
+		buffer_append_float32_auto(send_buffer, rpy[1], &ind);	
+		buffer_append_float32_auto(send_buffer, rpy[2], &ind);		
 
 		reply_func(send_buffer, ind);
 	} break;
