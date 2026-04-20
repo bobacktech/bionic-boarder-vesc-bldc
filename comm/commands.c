@@ -1678,7 +1678,7 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 
 	case COMM_GET_BIONIC_BOARDER: {
 		int32_t ind = 0;
-		uint8_t send_buffer[35];
+		uint8_t send_buffer[50];
 		send_buffer[ind++] = packet_id;
 
 		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_motor_current(), 1e2, &ind);
