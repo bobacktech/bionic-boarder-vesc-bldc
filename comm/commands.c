@@ -1678,16 +1678,37 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 
 	case COMM_GET_BIONIC_BOARDER: {
 		int32_t ind = 0;
-		uint8_t send_buffer[50];
+		uint8_t *send_buffer = mempools_get_packet_buffer();
 		send_buffer[ind++] = packet_id;
 
+		// COMM_GET_VALUES relevant data items
+		buffer_append_float16(send_buffer, mc_interface_temp_fet_filtered(), 1e1, &ind);
+		buffer_append_float16(send_buffer, mc_interface_temp_motor_filtered(), 1e1, &ind);
 		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_motor_current(), 1e2, &ind);
+		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_input_current(), 1e2, &ind);
+		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_id(), 1e2, &ind);
+		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_iq(), 1e2, &ind);
 		buffer_append_float16(send_buffer, mc_interface_get_duty_cycle_now(), 1e3, &ind);
 		buffer_append_float32(send_buffer, mc_interface_get_rpm(), 1e0, &ind);
-
-		float rpy[3], acc[3];
+		buffer_append_float16(send_buffer, mc_interface_get_input_voltage_filtered(), 1e1, &ind);
+		buffer_append_float32(send_buffer, mc_interface_get_amp_hours(false), 1e4, &ind);
+		buffer_append_float32(send_buffer, mc_interface_get_amp_hours_charged(false), 1e4, &ind);
+		buffer_append_float32(send_buffer, mc_interface_get_watt_hours(false), 1e4, &ind);
+		buffer_append_float32(send_buffer, mc_interface_get_watt_hours_charged(false), 1e4, &ind);
+		buffer_append_int32(send_buffer, mc_interface_get_tachometer_value(false), &ind);
+		buffer_append_int32(send_buffer, mc_interface_get_tachometer_abs_value(false), &ind);
+		send_buffer[ind++] = mc_interface_get_fault();
+		buffer_append_float32(send_buffer, mc_interface_get_pid_pos_now(), 1e6, &ind);
+		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_vd(), 1e3, &ind);
+		buffer_append_float32(send_buffer, mc_interface_read_reset_avg_vq(), 1e3, &ind);
+		
+		// COMM_GET_IMU_DATA data items
+		float rpy[3], acc[3], gyro[3], mag[3], q[4];
+		imu_get_rpy(rpy);
 		imu_get_accel(acc);
-		imu_get_rpy(rpy);		
+		imu_get_gyro(gyro);
+		imu_get_mag(mag);
+		imu_get_quaternions(q);	
 		
 		buffer_append_float32_auto(send_buffer, acc[0], &ind);
 		buffer_append_float32_auto(send_buffer, acc[1], &ind);
@@ -1695,9 +1716,23 @@ void commands_process_packet(unsigned char *data, unsigned int len,
 
 		buffer_append_float32_auto(send_buffer, rpy[0], &ind);
 		buffer_append_float32_auto(send_buffer, rpy[1], &ind);	
-		buffer_append_float32_auto(send_buffer, rpy[2], &ind);		
+		buffer_append_float32_auto(send_buffer, rpy[2], &ind);
+
+		buffer_append_float32_auto(send_buffer, gyro[0], &ind);
+		buffer_append_float32_auto(send_buffer, gyro[1], &ind);
+		buffer_append_float32_auto(send_buffer, gyro[2], &ind);
+
+		buffer_append_float32_auto(send_buffer, mag[0], &ind);
+		buffer_append_float32_auto(send_buffer, mag[1], &ind);
+		buffer_append_float32_auto(send_buffer, mag[2], &ind);
+
+		buffer_append_float32_auto(send_buffer, q[0], &ind);
+		buffer_append_float32_auto(send_buffer, q[1], &ind);
+		buffer_append_float32_auto(send_buffer, q[2], &ind);
+		buffer_append_float32_auto(send_buffer, q[3], &ind);
 
 		reply_func(send_buffer, ind);
+		mempools_free_packet_buffer(send_buffer);
 	} break;
 	
 	default:
