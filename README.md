@@ -1,6 +1,6 @@
 # VESC firmware
 
-This is a fork of the open source motor controller firmware.
+This is a fork of BENJAMIN VEDDER'S BLDC motor controller firmware. The fork was created on March 10, 2026.
 
 Read more at [https://vesc-project.com/](https://vesc-project.com/).
 
