@@ -1,19 +1,10 @@
 # VESC firmware
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-[![Travis CI Status](https://travis-ci.com/vedderb/bldc.svg?branch=master)](https://travis-ci.com/vedderb/bldc)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/75e90ffbd46841a3a7be2a9f7a94c242)](https://www.codacy.com/app/vedderb/bldc?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=vedderb/bldc&amp;utm_campaign=Badge_Grade)
-[![Contributors](https://img.shields.io/github/contributors/vedderb/bldc.svg)](https://github.com/vedderb/bldc/graphs/contributors)
-[![Watchers](https://img.shields.io/github/watchers/vedderb/bldc.svg)](https://github.com/vedderb/bldc/watchers)
-[![Stars](https://img.shields.io/github/stars/vedderb/bldc.svg)](https://github.com/vedderb/bldc/stargazers)
-[![Forks](https://img.shields.io/github/forks/vedderb/bldc.svg)](https://github.com/vedderb/bldc/network/members)
+This is a fork of the open source motor controller firmware.
 
-An open source motor controller firmware.
+Read more at [https://vesc-project.com/](https://vesc-project.com/).
 
-This is the source code for the VESC DC/BLDC/FOC controller. Read more at
-[https://vesc-project.com/](https://vesc-project.com/)
-
-## Firmware Modification for the [Bionic Boarder Application](https://bionic-boarder.web.app/)
+## Release 6.02 Firmware Modification for the [Bionic Boarder Application](https://bionic-boarder.web.app/)
 
 The Bionic Boarder App needs data from two different commands for its main control loop. With the standard firmware, the App must send each command and wait for its response one after the other. This doubles the time needed to collect all the required data in each cycle. More importantly, the data in the two responses is not synchronized. To solve this, the firmware now has a dedicated command, called Bionic Boarder, and a matching response for the App.
 
